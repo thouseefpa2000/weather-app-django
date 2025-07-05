@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <nav>
+        <h1>What's the Weather Today?</h1>
+    </nav>
+
+    <main>
+        <div class="search">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="city" placeholder="Search city..." required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        {% if weather.city %}
+        <div class="city">
+            <ul>
+                <li>{{ weather.city }}
+                    <p>{{ weather.temperature }}°C</p>
+                    <p>{{ weather.description|title }}</p>
+                    <img src="https://openweathermap.org/img/w/{{ weather.icon }}.png" alt="icon">
+                </li>
+            </ul>
+        </div>
+        {% elif weather.error %}
+        <p style="color: red;">{{ weather.error }}</p>
+        {% endif %}
+    </main>
+</body>
+</html>
